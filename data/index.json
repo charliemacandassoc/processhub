@@ -1,0 +1,29 @@
+{
+  "processes": [
+    {
+      "id": "customer-onboarding",
+      "title": "Customer onboarding",
+      "category": ["Customer management", "Onboarding"],
+      "department": "Customer Experience",
+      "owner": "Sarah Chen",
+      "owner_email": "s.chen@company.com",
+      "status": "approved",
+      "version": "1.2",
+      "last_updated": "2025-04-12",
+      "objective": "Onboard new customers from application to active account within 3 business days."
+    }
+  ,
+    {
+      "id": "identity-verification",
+      "title": "Identity verification",
+      "category": ["Customer management", "Onboarding"],
+      "department": "Compliance",
+      "owner": "Priya Nair",
+      "owner_email": "p.nair@company.com",
+      "status": "approved",
+      "version": "1.1",
+      "last_updated": "2025-03-20",
+      "objective": "Verify the identity of applicants against government-issued documentation and screen for fraud, PEP, and sanctions risks."
+    }
+  ]
+}

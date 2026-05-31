@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+             targetNamespace="http://processhub.io/customer-onboarding">
+
+  <process id="customer-onboarding" name="Customer Onboarding" isExecutable="false">
+    <startEvent id="start" name="Application received">
+      <outgoing>flow1</outgoing>
+    </startEvent>
+
+    <task id="task_submit_application" name="Submit application">
+      <incoming>flow1</incoming>
+      <outgoing>flow2</outgoing>
+    </task>
+
+    <exclusiveGateway id="gw_check" name="Application complete?">
+      <incoming>flow2</incoming>
+      <outgoing>flow3</outgoing>
+      <outgoing>flow_reject</outgoing>
+    </exclusiveGateway>
+
+    <subProcess id="task_verify_identity" name="Verify identity" data-subprocess-id="identity-verification">
+      <incoming>flow3</incoming>
+      <outgoing>flow4</outgoing>
+    </subProcess>
+
+    <task id="task_account_setup" name="Account setup">
+      <incoming>flow4</incoming>
+      <outgoing>flow5</outgoing>
+    </task>
+
+    <endEvent id="end_success" name="Customer active">
+      <incoming>flow5</incoming>
+    </endEvent>
+
+    <endEvent id="end_reject" name="Application rejected">
+      <incoming>flow_reject</incoming>
+    </endEvent>
+
+    <sequenceFlow id="flow1" sourceRef="start" targetRef="task_submit_application"/>
+    <sequenceFlow id="flow2" sourceRef="task_submit_application" targetRef="gw_check"/>
+    <sequenceFlow id="flow3" name="Yes" sourceRef="gw_check" targetRef="task_verify_identity"/>
+    <sequenceFlow id="flow4" sourceRef="task_verify_identity" targetRef="task_account_setup"/>
+    <sequenceFlow id="flow5" sourceRef="task_account_setup" targetRef="end_success"/>
+    <sequenceFlow id="flow_reject" name="No" sourceRef="gw_check" targetRef="end_reject"/>
+  </process>
+
+  <bpmndi:BPMNDiagram id="diagram">
+    <bpmndi:BPMNPlane bpmnElement="customer-onboarding">
+      <bpmndi:BPMNShape id="start_di" bpmnElement="start">
+        <omgdc:Bounds x="80" y="160" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_submit_application_di" bpmnElement="task_submit_application">
+        <omgdc:Bounds x="170" y="140" width="120" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="gw_check_di" bpmnElement="gw_check" isMarkerVisible="true">
+        <omgdc:Bounds x="345" y="153" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_verify_identity_di" bpmnElement="task_verify_identity" isExpanded="false">
+        <omgdc:Bounds x="450" y="140" width="140" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_account_setup_di" bpmnElement="task_account_setup">
+        <omgdc:Bounds x="650" y="140" width="120" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="end_success_di" bpmnElement="end_success">
+        <omgdc:Bounds x="830" y="160" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="end_reject_di" bpmnElement="end_reject">
+        <omgdc:Bounds x="363" y="280" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="flow1_di" bpmnElement="flow1">
+        <omgdi:waypoint x="116" y="178"/><omgdi:waypoint x="170" y="178"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow2_di" bpmnElement="flow2">
+        <omgdi:waypoint x="290" y="178"/><omgdi:waypoint x="345" y="178"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow3_di" bpmnElement="flow3">
+        <omgdi:waypoint x="395" y="178"/><omgdi:waypoint x="450" y="178"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow4_di" bpmnElement="flow4">
+        <omgdi:waypoint x="590" y="178"/><omgdi:waypoint x="650" y="178"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow5_di" bpmnElement="flow5">
+        <omgdi:waypoint x="770" y="178"/><omgdi:waypoint x="830" y="178"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_reject_di" bpmnElement="flow_reject">
+        <omgdi:waypoint x="370" y="203"/><omgdi:waypoint x="370" y="280"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

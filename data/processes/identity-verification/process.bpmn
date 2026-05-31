@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+             targetNamespace="http://processhub.io/identity-verification">
+
+  <process id="identity-verification" name="Identity Verification" isExecutable="false">
+    <startEvent id="idv_start" name="Documents received">
+      <outgoing>idv_flow1</outgoing>
+    </startEvent>
+
+    <task id="idv_task_ocr_check" name="OCR document check">
+      <incoming>idv_flow1</incoming>
+      <outgoing>idv_flow2</outgoing>
+    </task>
+
+    <exclusiveGateway id="idv_gw_auto" name="Auto check passed?">
+      <incoming>idv_flow2</incoming>
+      <outgoing>idv_flow3</outgoing>
+      <outgoing>idv_flow4</outgoing>
+    </exclusiveGateway>
+
+    <task id="idv_task_watchlist" name="Watchlist &amp; sanctions screening">
+      <incoming>idv_flow3</incoming>
+      <outgoing>idv_flow5</outgoing>
+    </task>
+
+    <task id="idv_task_manual_review" name="Manual review">
+      <incoming>idv_flow4</incoming>
+      <outgoing>idv_flow6</outgoing>
+    </task>
+
+    <exclusiveGateway id="idv_gw_merge" name="">
+      <incoming>idv_flow5</incoming>
+      <incoming>idv_flow6</incoming>
+      <outgoing>idv_flow7</outgoing>
+    </exclusiveGateway>
+
+    <task id="idv_task_log_outcome" name="Log outcome &amp; notify">
+      <incoming>idv_flow7</incoming>
+      <outgoing>idv_flow8</outgoing>
+    </task>
+
+    <endEvent id="idv_end" name="Verification complete">
+      <incoming>idv_flow8</incoming>
+    </endEvent>
+
+    <sequenceFlow id="idv_flow1" sourceRef="idv_start" targetRef="idv_task_ocr_check"/>
+    <sequenceFlow id="idv_flow2" sourceRef="idv_task_ocr_check" targetRef="idv_gw_auto"/>
+    <sequenceFlow id="idv_flow3" name="Yes" sourceRef="idv_gw_auto" targetRef="idv_task_watchlist"/>
+    <sequenceFlow id="idv_flow4" name="No" sourceRef="idv_gw_auto" targetRef="idv_task_manual_review"/>
+    <sequenceFlow id="idv_flow5" sourceRef="idv_task_watchlist" targetRef="idv_gw_merge"/>
+    <sequenceFlow id="idv_flow6" sourceRef="idv_task_manual_review" targetRef="idv_gw_merge"/>
+    <sequenceFlow id="idv_flow7" sourceRef="idv_gw_merge" targetRef="idv_task_log_outcome"/>
+    <sequenceFlow id="idv_flow8" sourceRef="idv_task_log_outcome" targetRef="idv_end"/>
+  </process>
+
+  <bpmndi:BPMNDiagram id="diagram">
+    <bpmndi:BPMNPlane bpmnElement="identity-verification">
+      <bpmndi:BPMNShape id="idv_start_di" bpmnElement="idv_start">
+        <omgdc:Bounds x="80" y="180" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="idv_task_ocr_check_di" bpmnElement="idv_task_ocr_check">
+        <omgdc:Bounds x="170" y="158" width="120" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="idv_gw_auto_di" bpmnElement="idv_gw_auto" isMarkerVisible="true">
+        <omgdc:Bounds x="345" y="173" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="idv_task_watchlist_di" bpmnElement="idv_task_watchlist">
+        <omgdc:Bounds x="450" y="90" width="140" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="idv_task_manual_review_di" bpmnElement="idv_task_manual_review">
+        <omgdc:Bounds x="450" y="230" width="120" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="idv_gw_merge_di" bpmnElement="idv_gw_merge" isMarkerVisible="true">
+        <omgdc:Bounds x="645" y="173" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="idv_task_log_outcome_di" bpmnElement="idv_task_log_outcome">
+        <omgdc:Bounds x="750" y="158" width="120" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="idv_end_di" bpmnElement="idv_end">
+        <omgdc:Bounds x="930" y="180" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="idv_flow1_di" bpmnElement="idv_flow1">
+        <omgdi:waypoint x="116" y="198"/><omgdi:waypoint x="170" y="198"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="idv_flow2_di" bpmnElement="idv_flow2">
+        <omgdi:waypoint x="290" y="198"/><omgdi:waypoint x="345" y="198"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="idv_flow3_di" bpmnElement="idv_flow3">
+        <omgdi:waypoint x="370" y="173"/><omgdi:waypoint x="370" y="130"/><omgdi:waypoint x="450" y="130"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="idv_flow4_di" bpmnElement="idv_flow4">
+        <omgdi:waypoint x="370" y="223"/><omgdi:waypoint x="370" y="270"/><omgdi:waypoint x="450" y="270"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="idv_flow5_di" bpmnElement="idv_flow5">
+        <omgdi:waypoint x="590" y="130"/><omgdi:waypoint x="670" y="130"/><omgdi:waypoint x="670" y="173"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="idv_flow6_di" bpmnElement="idv_flow6">
+        <omgdi:waypoint x="570" y="270"/><omgdi:waypoint x="670" y="270"/><omgdi:waypoint x="670" y="223"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="idv_flow7_di" bpmnElement="idv_flow7">
+        <omgdi:waypoint x="695" y="198"/><omgdi:waypoint x="750" y="198"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="idv_flow8_di" bpmnElement="idv_flow8">
+        <omgdi:waypoint x="870" y="198"/><omgdi:waypoint x="930" y="198"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
