@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(pandoc ProcessHub_ClaudeCode_Handover.docx -o handover.md)",
-      "Bash(find /mnt/c/Temp/process-hub -not -path '*/node_modules/*' | sort)",
-      "mcp__Claude_Preview__preview_start"
-    ]
-  }
-}

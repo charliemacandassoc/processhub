@@ -7,3 +7,7 @@ frontend/.env.local
 backend/.env
 deploy/.env.production
 *.log
+
+.claude/
+scratchpad.md
+*.docx
